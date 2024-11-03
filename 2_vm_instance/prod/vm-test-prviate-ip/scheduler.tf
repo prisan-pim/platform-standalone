@@ -7,7 +7,7 @@ resource "google_cloud_scheduler_job" "start_instance" {
   time_zone  = "Asia/Bangkok"
   http_target {
     http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/asia-southeast1-a/instances/${google_compute_instance.tool.name}/start"
+    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project_name}/zones/asia-southeast1-a/instances/${google_compute_instance.vm_private_ip.name}/start"
 
      oauth_token {
       service_account_email = google_service_account.scheduler_service_account.email
@@ -23,7 +23,7 @@ resource "google_cloud_scheduler_job" "stop_instance" {
   time_zone  = "Asia/Bangkok"
   http_target {
     http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/asia-southeast1-a/instances/${google_compute_instance.tool.name}/stop"
+    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project_name}/zones/asia-southeast1-a/instances/${google_compute_instance.vm_private_ip.name}/stop"
 
     oauth_token {
       service_account_email = google_service_account.scheduler_service_account.email

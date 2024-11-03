@@ -1,6 +1,6 @@
 # Install Gitlab
 
-# install on os 
+## install on os 
 ```
 sudo apt update
 sudo apt install ca-certificates curl openssh-server postfix tzdata perl
@@ -19,7 +19,7 @@ external_url = "http://gitlab.domain.com"
 sudo gitlab-ctl reconfigure
 ```
 
-# install on docker
+## install on docker
 ```
 sudo mkdir -p /srv/gitlab
 export GITLAB_HOME=/srv/gitlab
@@ -32,7 +32,7 @@ sudo docker exec -it gitlab grep 'Password:'
 /etc/gitlab/initial_root_password
 ```
 
-# install AacgoCD
+## install acgoCD
 ```
 kubectl create namespace argocd
 

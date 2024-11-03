@@ -1,43 +1,38 @@
-provider "google" {
-  project = var.project
-  region  = var.region
-  credentials = file("../key.json")
+# Craete VPC Name Of Internal
+resource "google_compute_network" "vpc_internal" {
+    name = var.vpc_internal
+    auto_create_subnetworks = false
 }
 
-resource "google_compute_network" "vpc_1" {
-  name                    = var.vpc_1
-  auto_create_subnetworks = false
+resource "google_compute_subnetwork" "subnet_internal_a" {
+    name = "${var.subnet_internal}-a"
+    ip_cidr_range =  "10.0.1.0/24"
+    region = var.region
+    network = google_compute_network.vpc_internal.id
 }
 
-resource "google_compute_subnetwork" "subnet1_vpc1" {
-  name          = "${var.vpc_1}-subnet-1"
-  ip_cidr_range = "10.0.1.0/24"
-  region        = var.region
-  network       = google_compute_network.vpc_1.id
+# Create  VPC Name Of Dev
+resource "google_compute_network" "vpc_dev" {
+    name = var.vpc_dev
+    auto_create_subnetworks = false
 }
 
-# VPC 2 (dev) with subnets a
-resource "google_compute_network" "vpc_2" {
-  name                    = var.vpc_2
-  auto_create_subnetworks = false
+resource "google_compute_subnetwork" "subnet_dev_a" {
+    name = "${var.subnet_dev}-a"
+    ip_cidr_range =  "10.1.1.0/24"
+    region = var.region
+    network = google_compute_network.vpc_dev.id
 }
 
-resource "google_compute_subnetwork" "subnet_a_vpc2" {
-  name          = "${var.vpc_2}-subnet-a"
-  ip_cidr_range = "10.1.1.0/24"
-  region        = var.region
-  network       = google_compute_network.vpc_2.id
+# Create  VPC Name Of Prod
+resource "google_compute_network" "vpc_prod" {
+    name = var.vpc_prod
+    auto_create_subnetworks = false
 }
 
-# VPC 3 (prod) with subnets a
-resource "google_compute_network" "vpc_3" {
-  name                    = var.vpc_3
-  auto_create_subnetworks = false
-}
-
-resource "google_compute_subnetwork" "subnet_a_vpc3" {
-  name          = "${var.vpc_3}-subnet-a"
-  ip_cidr_range = "10.2.1.0/24"
-  region        = var.region
-  network       = google_compute_network.vpc_3.id
+resource "google_compute_subnetwork" "subnet_prod_a" {
+    name = "${var.subnet_prod}-a"
+    ip_cidr_range =  "10.2.1.0/24"
+    region = var.region
+    network = google_compute_network.vpc_prod.id
 }

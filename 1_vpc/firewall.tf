@@ -1,65 +1,61 @@
-# Firewall Rules for VPC 1
-
-resource "google_compute_firewall" "firewall_vpc1" {
-  name    = "${var.vpc_1}-firewall"
-  network = google_compute_network.vpc_1.id
+resource "google_compute_firewall" "vpc_internal_ssh" {
+  name = "${var.vpc_internal}-firewall-ssh"
+  network = google_compute_network.vpc_internal.id
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "443"]
-  }
-
-  allow {
-    protocol = "icmp"
+    ports = ["22" , "80" , "443"]
   }
 
   source_ranges = [
-    "${google_compute_subnetwork.subnet1_vpc1.ip_cidr_range}" , 
-    "${google_compute_subnetwork.subnet_a_vpc2.ip_cidr_range}" , 
-    "${google_compute_subnetwork.subnet_a_vpc3.ip_cidr_range}" , 
     "0.0.0.0/0"
   ]
 }
 
-
-# Firewall Rules for VPC 2
-resource "google_compute_firewall" "firewall_vpc2" {
-  name    = "${var.vpc_2}-firewall"
-  network = google_compute_network.vpc_2.id
+resource "google_compute_firewall" "vpc_internal" {
+  name = "${var.vpc_internal}-firewall"
+  network = google_compute_network.vpc_internal.id
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "443"]
-  }
-
-  allow {
-    protocol = "icmp"
+    ports = ["80" , "443" , "3306" , "5432"]
   }
 
   source_ranges = [
-    "${google_compute_subnetwork.subnet1_vpc1.ip_cidr_range}" , 
-    "${google_compute_subnetwork.subnet_a_vpc2.ip_cidr_range}" , 
-    "${google_compute_subnetwork.subnet_a_vpc3.ip_cidr_range}" , 
+    "${google_compute_subnetwork.subnet_internal_a.ip_cidr_range}",
+    "${google_compute_subnetwork.subnet_dev_a.ip_cidr_range}",
+    "${google_compute_subnetwork.subnet_prod_a.ip_cidr_range}"
   ]
 }
 
-# Firewall Rules for VPC 3
-resource "google_compute_firewall" "firewall_vpc3" {
-  name    = "${var.vpc_3}-firewall"
-  network = google_compute_network.vpc_3.id
+resource "google_compute_firewall" "vpc_dev" {
+  name = "${var.vpc_dev}-firewall"
+  network = google_compute_network.vpc_dev.id
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "443"]
-  }
-
-  allow {
-    protocol = "icmp"
+    ports = ["80" , "443" , "3306" , "5432" , "22"]
   }
 
   source_ranges = [
-    "${google_compute_subnetwork.subnet1_vpc1.ip_cidr_range}" , 
-    "${google_compute_subnetwork.subnet_a_vpc2.ip_cidr_range}" , 
-    "${google_compute_subnetwork.subnet_a_vpc3.ip_cidr_range}" , 
+    "${google_compute_subnetwork.subnet_internal_a.ip_cidr_range}",
+    "${google_compute_subnetwork.subnet_dev_a.ip_cidr_range}",
+    "${google_compute_subnetwork.subnet_prod_a.ip_cidr_range}"
+  ]
+}
+
+resource "google_compute_firewall" "vpc_prod" {
+  name = "${var.vpc_prod}-firewall"
+  network = google_compute_network.vpc_prod.id
+
+  allow {
+    protocol = "tcp"
+    ports = ["80" , "443" , "3306" , "5432" , "22"]
+  }
+
+  source_ranges = [
+    "${google_compute_subnetwork.subnet_internal_a.ip_cidr_range}",
+    "${google_compute_subnetwork.subnet_dev_a.ip_cidr_range}",
+    "${google_compute_subnetwork.subnet_prod_a.ip_cidr_range}"
   ]
 }

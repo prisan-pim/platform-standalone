@@ -1,38 +1,16 @@
-
-output "vpc-internal" {
-  value = google_compute_network.vpc_1.name
-}
-
-output "subnet_internal" {
+output "vpc" {
   value = {
-    subnet_1 = google_compute_subnetwork.subnet1_vpc1.name
-  }
-}
-
-output "vpc-dev" {
-  value = google_compute_network.vpc_2.name
-}
-
-output "subnet_dev" {
-  value = {
-    subnet_1 = google_compute_subnetwork.subnet_a_vpc2.name
-  }
-}
-
-output "vpc-prod" {
-  value = google_compute_network.vpc_3.name
-}
-
-output "subnet_prod" {
-  value = {
-    subnet_1 = google_compute_subnetwork.subnet_a_vpc3.name
+    vpc_internal = google_compute_network.vpc_internal.name
+    vpc_dev = google_compute_network.vpc_dev.name
+    vpc_prod = google_compute_network.vpc_prod.name
   }
 }
 
 output "firewall" {
   value = {
-    vpc1 = google_compute_firewall.firewall_vpc1.name
-    vpc2 = google_compute_firewall.firewall_vpc2.name
-    vpc3 = google_compute_firewall.firewall_vpc3.name
+    firewall_internal_ssh = google_compute_firewall.vpc_internal_ssh.name
+    firewall_internal = google_compute_firewall.vpc_internal.name
+    firewall_dev = google_compute_firewall.vpc_dev.name
+    firewall_prod = google_compute_firewall.vpc_prod.name
   }
 }

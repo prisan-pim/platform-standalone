@@ -51,7 +51,169 @@ user : admin
 password : ให้ใช้คำสั่งนี้ในการดึง kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}"| base64 -d;echo
 ```
 
-## install prometheus and grafana
+
+# Monitoring
+
+## Install Prometheus Node Exporter
+
+## 1.installl Node Exporter
+
+Download Node Exporter
+```
+sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+```
+
+Extract Files
+```
+sudo tar xzf node_exporter-1.7.0.linux-amd64.tar.gz
+sudo rm -rf node_exporter-1.7.0.linux-amd64.tar.gz
+```
+
+Move Files
+```
+sudo mv node_exporter-1.7.0.linux-amd64 /etc/node_exporter
+```
+
+Create Service
+```
+sudo nano /etc/systemd/system/node_exporter.service
+```
+
+Config Service File Run On System
+```
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/etc/node_exporter/node_exporter
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Run Node Exporter
+```
+sudo systemctl daemon-reload
+sudo systemctl enable node_exporter
+sudo systemctl restart node_exporter
+```
+
+Check System
+```
+sudo systemctl status node_exporter
+```
+
+## 2.installl Prometheus
+
+Download and Extract Files
+```
+sudo wget https://github.com/prometheus/prometheus/releases/download/v2.47.0/prometheus-2.47.0.linux-amd64.tar.gz
+
+sudo tar vxf prometheus*.tar.gz
+```
+
+Create User for Prometheus
+```
+sudo groupadd --system prometheus
+sudo useradd -s /sbin/nologin --system -g prometheus prometheus
+```
+
+Create Folder System
+```
+sudo mkdir /etc/prometheus
+sudo mkdir /var/lib/prometheus
+```
+
+Move File
+```
+cd prometheus/
+
+sudo mv prometheus /usr/local/bin
+sudo mv promtool /usr/local/bin
+
+sudo mv console* /etc/prometheus
+sudo mv prometheus.yml /etc/prometheus
+```
+
+Set Permisstion file
+```
+sudo chown prometheus:prometheus /usr/local/bin/prometheus
+sudo chown prometheus:prometheus /usr/local/bin/promtool
+sudo chown prometheus:prometheus /etc/prometheus
+sudo chown -R prometheus:prometheus /etc/prometheus/consoles
+sudo chown -R prometheus:prometheus /etc/prometheus/console_libraries
+sudo chown -R prometheus:prometheus /var/lib/prometheus
+```
+
+Config prometheus.yaml
+```
+sudo nano /etc/prometheus/prometheus.yml
+```
+```
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'node'
+    static_configs:
+      - targets: ['localhost:9100']
+```
+
+Create Systemd Service
+```
+sudo nano /etc/systemd/system/prometheus.service
+```
+
+
+Config Service File Run On System
+```
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+ExecStart=/usr/local/bin/prometheus \
+ --config.file /etc/prometheus/prometheus.yml \
+ --storage.tsdb.path /var/lib/prometheus/ \
+ --web.console.templates=/etc/prometheus/consoles \
+ --web.console.libraries=/etc/prometheus/console_libraries
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Start System
+```
+sudo systemctl daemon-reload
+sudo systemctl enable prometheus
+sudo systemctl start prometheus
+```
+
+Check Prometheus Status
+```
+sudo systemctl status prometheus
+```
+
+Grafana Dashbaord 
+
+id 
+```
+1860
+```
+
+## Install Prometheus and Grafana on gke
 ```
 kubectl create namespace monitoring
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts

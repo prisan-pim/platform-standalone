@@ -32,7 +32,7 @@ sudo docker exec -it gitlab grep 'Password:'
 /etc/gitlab/initial_root_password
 ```
 
-## install acgoCD
+# install acgoCD
 ```
 kubectl create namespace argocd
 
@@ -56,7 +56,7 @@ password : ให้ใช้คำสั่งนี้ในการดึง
 
 ## Install Prometheus Node Exporter
 
-## 1.installl Node Exporter
+## 1.install Node Exporter
 
 Download Node Exporter
 ```
@@ -106,7 +106,7 @@ Check System
 sudo systemctl status node_exporter
 ```
 
-## 2.installl Prometheus
+## 2.install Prometheus
 
 Download and Extract Files
 ```

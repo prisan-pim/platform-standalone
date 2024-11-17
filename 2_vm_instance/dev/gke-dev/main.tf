@@ -53,10 +53,10 @@ resource "google_container_node_pool" "primary_nodes" {
     auto_upgrade = true
   }
 
-  # autoscaling {
-  #   min_node_count = 2
-  #   max_node_count = 4
-  # }
+  autoscaling {
+    min_node_count = 2
+    max_node_count = 4
+  }
 
   timeouts {
     create = "60m"

@@ -1,0 +1,23 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    notifications.argoproj.io/subscribe.grafana: argocd|app|console-api
+  name: console-api
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: application
+  source:
+    repoURL: https://git.domain.com/helm-application.git
+    targetRevision: HEAD
+    path: source/console-api
+    helm:
+      valueFiles:                            
+        - values/dev.yaml
+  project: application
+  syncPolicy:
+    automated:
+      selfHeal: true

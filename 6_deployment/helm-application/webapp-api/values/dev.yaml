@@ -1,0 +1,36 @@
+config:
+  name: webapp-api-service
+  namespace: application
+  replicas: 2
+  vaultpath: webapp/webapp-api-service
+  vault: true
+  
+image:
+  repository: registry.domain.com
+  tag: dev
+
+imagePullSecrets: 
+  name: gitlab-registry
+service:
+  type: NodePort
+  port: 5000
+env:
+  env: staging
+  envFromSecret: env-secrets
+  envFromSecretUse: false
+  env_config:
+    - name: Value1
+      value: Value1
+    - name: Value2
+      value: Value2
+
+ingresPrivate: true
+ingresPrivateConfig:
+  DomainName: webapp-api.dev.domain.com
+
+
+
+
+
+
+

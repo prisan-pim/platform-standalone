@@ -1,0 +1,21 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: "{{ .Values.config.name }}-metrics"
+  namespace: {{ .Values.config.namespace }}
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.config.name }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.config.namespace }}
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 10s
+      scheme: http

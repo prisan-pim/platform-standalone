@@ -7,19 +7,19 @@ variable "region" {
 }
 
 variable "vpc" {
-  default = "vpc-dev"
+  default = "vpc-internal"
 }
 
 variable "subnet" {
-  default = "subnet-dev-a"
+  default = "subnet-interal-a"
 }
 
 variable "name_server" {
-  default = "vm-dev-private-ip"
+  default = "keycloak"
 }
 
 variable "machine_type" {
-  default = "e2-medium"
+  default = "e2-standard-2"
 }
 
 variable "image" {
@@ -28,4 +28,8 @@ variable "image" {
 
 variable "file_account" {
   default = "../../../key/ubuntu.pub"
+}
+
+variable "ip_address" {
+  default = "10.0.1.20"
 }

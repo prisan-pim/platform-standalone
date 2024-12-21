@@ -1,13 +1,19 @@
 
+resource "google_compute_address" "public_ip" {
+  name = "${var.name_server}-public-ip"
+  region = var.region
+  address_type = "EXTERNAL"
+}
+
 resource "google_compute_address" "private_ip" {
   name = "${var.name_server}-private-ip"
   region = var.region
   subnetwork = var.subnet
-  address = "10.1.1.10"
+  address = var.ip_address
   address_type = "INTERNAL"
 }
 
-resource "google_compute_instance" "vm_private_ip" {
+resource "google_compute_instance" "vm_public_ip" {
   name          = var.name_server
   machine_type  = var.machine_type
   zone          = "${var.region}-a"
@@ -23,6 +29,9 @@ resource "google_compute_instance" "vm_private_ip" {
     network = var.vpc
     subnetwork = var.subnet
     network_ip = google_compute_address.private_ip.address
+    access_config {
+      nat_ip = google_compute_address.public_ip.address
+    }
   }
   metadata = {
     sshKeys = "ubuntu:${file(var.file_account)}"

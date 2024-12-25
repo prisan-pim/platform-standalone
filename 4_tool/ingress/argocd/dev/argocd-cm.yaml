@@ -1,0 +1,28 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"argocd-cm","app.kubernetes.io/part-of":"argocd"},"name":"argocd-cm","namespace":"argocd"}}
+  creationTimestamp: "2024-11-16T15:37:35Z"
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm
+  namespace: argocd
+  resourceVersion: "48103"
+  uid: 73a6e84b-59f3-4402-8328-f350923a4934
+
+data:
+  url: https://localhost:8080
+  dex.config: |
+    connectors:
+    - type: oidc
+      id: keycloak
+      name: Keycloak
+      config:
+        issuer: https://auth.domain.com/realms/master
+        clientID: argocd
+        clientSecret: ""
+        redirectURI: https://localhost:8080/auth/callback

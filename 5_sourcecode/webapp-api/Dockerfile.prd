@@ -1,0 +1,10 @@
+FROM golang:alpine as builder
+ENV GO111MODULE=on
+WORKDIR $GOPATH/src/webapp-api
+COPY . .
+RUN go mod download
+RUN go build
+
+FROM scratch
+COPY --from=builder /go/src/webapp-api/webapp-api /go/bin/webapp-api
+ENTRYPOINT [ "/go/bin/webapp-api" ]

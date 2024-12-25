@@ -1,0 +1,11 @@
+FROM golang:alpine
+
+ENV GO111MODULE=on
+
+WORKDIR $GOPATH/src/webapp-api
+
+COPY . .
+
+RUN go mod download
+
+CMD ["go" , "run" , "main.go"]

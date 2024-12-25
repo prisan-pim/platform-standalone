@@ -1,0 +1,24 @@
+stages:
+  - develop-build
+
+develop-build:
+  stage: develop-build
+  image: docker:latest
+  tags: [gitlab-docker]
+  services:
+    - docker:dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    GCP_REPOSITORY_REGION: asia-southeast1
+    GCR_IMAGE_NAME: "asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT_ID/application-registry/$CI_PROJECT_NAME"
+  before_script:
+    - cat ${GOOGLE_AUTH_JSON} | docker login -u _json_key --password-stdin
+      https://${GCP_REPOSITORY_REGION}-docker.pkg.dev
+  script:
+    - docker build --pull -t $GCR_IMAGE_NAME:$CI_COMMIT_REF_NAME .
+    - docker push $GCR_IMAGE_NAME:$CI_COMMIT_REF_NAME
+  only:
+    - develop
+
+    
+    

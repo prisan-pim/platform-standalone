@@ -1,0 +1,60 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:16.2
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak_db
+      POSTGRES_USER: keycloak_db_user
+      POSTGRES_PASSWORD: keycloak_db_user_password
+    networks:
+      - keycloak_network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.6
+    command: start
+    environment:
+      KC_HOSTNAME: auth.domain.com
+      KC_HOSTNAME_STRICT_BACKCHANNEL: "false"
+      KC_HTTP_ENABLED: "true"
+      KC_HTTPS_ENABLED: "true"
+      KC_PROXY: edge
+      KC_HOSTNAME_STRICT_HTTPS: "true"
+      KC_HEALTH_ENABLED: "true"
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/keycloak_db
+      KC_DB_USERNAME: keycloak_db_user
+      KC_DB_PASSWORD: keycloak_db_user_password
+    ports:
+      - 8080:8080
+    restart: always
+    depends_on:
+      - postgres
+    networks:
+      - keycloak_network
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/certs:ro
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - keycloak_network
+    depends_on:
+      - keycloak
+    restart: always
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  keycloak_network:
+    driver: bridge

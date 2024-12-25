@@ -1,0 +1,10 @@
+version: '2'
+services:
+  webapp-api:
+    restart: always
+    container_name: "webapp-api"
+    build: 
+      dockerfile: Dockerfile.prd
+    ports:
+      - "1323:1323"
+    network_mode: bridge

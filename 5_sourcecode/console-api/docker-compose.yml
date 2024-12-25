@@ -1,0 +1,10 @@
+version: '2'
+services:
+  console-api:
+    restart: always
+    container_name: "console-api"
+    build: 
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    network_mode: bridge

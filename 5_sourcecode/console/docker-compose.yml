@@ -1,0 +1,10 @@
+version: '2'
+services:
+  console:
+    restart: always
+    container_name: "console"
+    build: 
+      dockerfile: Dockerfile.prd
+    ports:
+      - "80:80"
+    network_mode: bridge

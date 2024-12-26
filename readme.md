@@ -559,29 +559,26 @@ develop-build:
 
 ทดสอบสร้าง template สำหรับ helm
 ```
-helm template dashboard-service -f values/default.yaml -f values/dev.yaml .
-helm template payment-service -f values/default.yaml -f values/dev.yaml .
-helm template report-service -f values/default.yaml -f values/dev.yaml .
-helm template app-console -f values/default.yaml -f values/dev.yaml .
-helm template user-console -f values/default.yaml -f values/dev.yaml .
+helm template console -f values/default.yaml -f values/dev.yaml .
+helm template console-api -f values/default.yaml -f values/dev.yaml .
+helm template webapp -f values/default.yaml -f values/dev.yaml .
+helm template webapp-api -f values/default.yaml -f values/dev.yaml .
 ```
 
 ติดตั้ง application ด้วย helm
 ```
-helm install dashboard-service -f values/dev.yaml  .
-helm install payment-service -f values/dev.yaml  .
-helm install report-service -f values/dev.yaml .
-helm install app-console  -f values/dev.yaml  .
-helm install user-console -f values/dev.yaml  .
+helm install console -f values/dev.yaml  .
+helm install console-api -f values/dev.yaml  .
+helm install webapp -f values/dev.yaml .
+helm install webapp-api  -f values/dev.yaml  .
 ```
 
 ลบการติดตั้ง application ด้วย helm
 ```
-helm uninstall dashboard-service 
-helm uninstall payment-service
-helm uninstall report-service
-helm uninstall app-console
-helm uninstall user-console
+helm uninstall console
+helm uninstall console-api
+helm uninstall webapp
+helm uninstall webapp-api
 ```
 
 # Create secret

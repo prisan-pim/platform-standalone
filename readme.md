@@ -583,3 +583,12 @@ helm uninstall report-service
 helm uninstall app-console
 helm uninstall user-console
 ```
+
+# Create secret
+```
+kubectl create secret docker-registry gcr-json-key \
+  --docker-server=https://asia-southeast1-docker.pkg.dev \
+  --docker-username=_json_key \
+  --docker-password="$(cat key.json)" \
+  --docker-email=gitlab-ci@xxxx.iam.gserviceaccount.com -n application
+```

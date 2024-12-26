@@ -8,7 +8,7 @@ metadata:
     ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   rules:
-  - host: argocd.dev.domain.com
+  - host: argocd.prd.domain.com
     http:
       paths:
       - path: /
@@ -20,5 +20,5 @@ spec:
               number: 443
   tls:
   - hosts:
-    - argocd.dev.domain.com
+    - argocd.prd.domain.com
     secretName: your-certificate-name

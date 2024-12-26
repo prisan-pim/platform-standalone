@@ -48,9 +48,9 @@ data:
     client_id = grafana-oauth
     client_secret = Bz1RvkrW0KyPnpADp5yLU15JuYFXazfI
     scopes = openid email profile roles
-    auth_url = http://10.100.100.100:8080/realms/infra/protocol/openid-connect/auth
-    token_url = http://10.100.100.100:8080/realms/infra/protocol/openid-connect/token
-    api_url = http://10.100.100.100:8080/realms/infra/protocol/openid-connect/userinfo
+    auth_url = http://domain.com/realms/infra/protocol/openid-connect/auth
+    token_url = http://domain.com/realms/infra/protocol/openid-connect/token
+    api_url = http://domain.com/realms/infra/protocol/openid-connect/userinfo
     redirect_uri = http://grafana.example.local/login/generic_oauth
     role_attribute_path = contains(realm_access.roles[*], 'Admin') && 'Admin' || contains(realm_access.roles[*], 'Editor') && 'Editor' || 'Viewer'
     [analytics]

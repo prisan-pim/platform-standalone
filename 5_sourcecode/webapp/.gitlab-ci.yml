@@ -15,7 +15,7 @@ develop-build:
     - cat ${GOOGLE_AUTH_JSON} | docker login -u _json_key --password-stdin
       https://${GCP_REPOSITORY_REGION}-docker.pkg.dev
   script:
-    - docker build --pull -t $GCR_IMAGE_NAME:$CI_COMMIT_REF_NAME .
+    - docker build --pull -t $GCR_IMAGE_NAME:$CI_COMMIT_REF_NAME -f Dockerfile.prd .
     - docker push $GCR_IMAGE_NAME:$CI_COMMIT_REF_NAME
   only:
     - develop
